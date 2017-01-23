@@ -17,14 +17,45 @@
 import webapp2
 import random
 
+def getRandomFortune():
+    # make list of possible fortune
+    fortunes = ["Eat more Chiken", "The man is I", "AND ONNEEEEEE"]
+    return fortunes[random.randint(0, len(fortunes)-1)]
+    # randomly select one of the fortunes
+
 class MainHandler(webapp2.RequestHandler):
     def get(self):
         header = "<h1>Fortune Cookies</h1>"
-        lucky_number = random.randint(1, 100)
-        number_sentence = 'Your lucky number: ' + str(lucky_number)
-        number_paragraph = "<p>" + number_sentence + "</p>"
-        self.response.write(header + number_sentence)
 
-app = webapp2.WSGIApplication([
-    ('/', MainHandler)
-], debug=True)
+        fortune = "<strong>" + getRandomFortune() + "</strong>"
+        fortune_sentence = "Your fortune: " + fortune
+        fortune_paragraph = "<p>" + fortune + "</p>"
+
+        lucky_number = random.randint(1, 100)
+        number_sentence = 'Your lucky number: ' + "<strong>" + str(lucky_number) + "</strong>"
+        number_paragraph = "<p>" + number_sentence + "</p>"
+
+        cookie_again_button = "<a href='.'><button>Another Cookie Please!</button></a>"
+
+        content = header + fortune_paragraph + number_paragraph + cookie_again_button
+
+        self.response.write(content)
+
+
+class LoginHandler(webapp2.RequestHandler):
+    def get(self):
+        self.response.write("Thanks for trying to log in...")
+
+routes = [
+    ('/', MainHandler),
+    ('/login', LoginHandler)
+]
+
+app = webapp2.WSGIApplication(routes, debug=True)
+
+routes = [
+    ('/', MainHandler),
+    ('/login', LoginHandler)
+]
+
+app
